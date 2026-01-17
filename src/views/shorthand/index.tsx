@@ -15,12 +15,14 @@ import { Icon } from '@vicons/utils'
 
 import {
   AddIcon,
+  ExternalLinkIcon,
   MaterialSymbolsThumbDownOutline,
   MaterialSymbolsThumbUpOutline,
   PenIcon,
 } from '~/components/icons'
 import { useShorthand } from '~/components/shorthand'
 import { RelativeTime } from '~/components/time/relative-time'
+import { WEB_URL } from '~/constants/env'
 
 import { HeaderActionButton } from '../../components/button/rounded-button'
 import { ContentLayout } from '../../layouts/content'
@@ -72,7 +74,26 @@ export default defineComponent({
                   default() {
                     return (
                       <div class={styles['timeline-grid']}>
-                        <span>{item.content}</span>
+                        <div class="flex items-center gap-2">
+                          <span>{item.content}</span>
+                          <NButton
+                            quaternary
+                            type="primary"
+                            size="tiny"
+                            circle
+                            onClick={async () => {
+                              const url = new URL(
+                                `/thinking/${item.id}`,
+                                WEB_URL,
+                              )
+                              window.open(url.toString(), '_blank')
+                            }}
+                          >
+                            <Icon>
+                              <ExternalLinkIcon />
+                            </Icon>
+                          </NButton>
+                        </div>
 
                         <div class="action">
                           <NButton
@@ -108,7 +129,7 @@ export default defineComponent({
 
                               default: () => (
                                 <span class={'max-w-48 break-all'}>
-                                  确定要删除 {item.content} ?
+                                  确定要删除这条 ?
                                 </span>
                               ),
                             }}

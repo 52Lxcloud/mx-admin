@@ -105,7 +105,7 @@ const ManageSayListView = defineComponent({
                       ),
 
                       default: () => (
-                        <span class="max-w-48">确定要删除“{row.text}” ?</span>
+                        <span class="max-w-48">确定要删除这条？</span>
                       ),
                     }}
                   </NPopconfirm>

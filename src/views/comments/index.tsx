@@ -230,34 +230,44 @@ const ManageComment = defineComponent(() => {
             case 'pages': {
               return `${WEB_URL}/${row.ref.slug}`
             }
+            case 'recentlies': {
+              return `${WEB_URL}/thinking/${row.ref.id || row.ref._id}`
+            }
           }
         })() as string
+        const isRecently = row.refType === 'recentlies'
+        const refLabel = row.ref.title || (isRecently ? '速记' : '')
         return (
           <NSpace vertical size={2}>
             <NSpace size={5}>
               <span>{relativeTimeFromNow(row.created)}</span>
               <span>于</span>
-              {row.ref.title && (
-                <a href={link} target="_blank" rel="noreferrer">
-                  {row.ref.title}
-                </a>
-              )}
-              {row.ref.content && (
-                <NPopover>
-                  {{
-                    default() {
-                      return <p>{row.ref.content}</p>
-                    },
-                    trigger() {
-                      return (
-                        <NButton text size="tiny" type="primary">
-                          速记
-                        </NButton>
-                      )
-                    },
-                  }}
-                </NPopover>
-              )}
+              {refLabel &&
+                link &&
+                (isRecently && row.ref.content ? (
+                  <NPopover>
+                    {{
+                      default() {
+                        return <p>{row.ref.content}</p>
+                      },
+                      trigger() {
+                        return (
+                          <NButton text size="tiny" type="primary">
+                            <a href={link} target="_blank" rel="noreferrer">
+                              {refLabel}
+                            </a>
+                          </NButton>
+                        )
+                      },
+                    }}
+                  </NPopover>
+                ) : (
+                  <NButton text size="tiny" type="primary">
+                    <a href={link} target="_blank" rel="noreferrer">
+                      {refLabel}
+                    </a>
+                  </NButton>
+                ))}
             </NSpace>
             <p>
               <CommentMarkdownRender text={row.text} />
